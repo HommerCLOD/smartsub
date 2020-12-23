@@ -15,10 +15,11 @@ public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column( unique=true)
+    @Column( unique=true, nullable = false)
     private int id_users;
-    @Column( unique=true)
+    @Column( unique=true, nullable = false)
     private String token;
+    @Column(nullable = false)
     private String type;
 
 

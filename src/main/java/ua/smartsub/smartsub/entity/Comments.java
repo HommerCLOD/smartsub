@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 @AllArgsConstructor
 @Data
@@ -16,10 +15,13 @@ public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column( unique=true)
+    @Column(nullable=false)
     private String text;
+    @Column(nullable=false)
     private int rating;
+    @Column(nullable=false)
     private int id_Subscribe;
+    @Column(nullable=false)
     private int id_users;
 
 }

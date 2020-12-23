@@ -11,16 +11,15 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "Users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column( unique=true)
+    @Column( unique=true, nullable = false)
     private String username;
-    @Column( unique=true)
+    @Column( unique=true, nullable = false)
     private String email;
+    @Column( nullable = false)
     private String password;
     private String telegram_user_id;
     private boolean status_active_account;

@@ -15,9 +15,11 @@ public class Subs_tokens {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column( unique=true)
+    @Column( nullable=false)
     private int id_users;
+    @Column( nullable=false)
     private String bot_url;
+    @Column( nullable=false)
     private String bot_access_token;
     @Temporal(TemporalType.TIMESTAMP)
     private Date byu_current_time;

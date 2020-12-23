@@ -1,6 +1,5 @@
 package ua.smartsub.smartsub.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,10 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @AllArgsConstructor
-@Data
-@NoArgsConstructor
 @Entity
-public class ADS_slider {
+@NoArgsConstructor
+@Data
+public class Ads_slider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
