@@ -4,9 +4,11 @@ package ua.smartsub.smartsub.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
+
 
 @AllArgsConstructor
 @Data
@@ -25,4 +27,7 @@ public class JWT_tokens {
     private String refresh_token;
     @Temporal(TemporalType.TIMESTAMP)
     private Date create_at_time;
+//    @CreationTimestamp
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date create_at_date;
 }
