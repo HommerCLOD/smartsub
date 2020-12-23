@@ -6,22 +6,20 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "Users")
-public class User {
-
+public class Subscribe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private String bot_url;
+    private int price;
+    private String description;
+    private String bot_image;
+    private String bot_name;
     @Column( unique=true)
-    private String username;
-    @Column( unique=true)
-    private String email;
-    private String password;
-    private String telegram_user_id;
-    private boolean status_active_account;
+    private int id_Subs_tokens;
+
 }

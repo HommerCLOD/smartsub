@@ -5,23 +5,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
+import java.sql.Date;
 
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "Users")
-public class User {
-
+public class Subs_tokens {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column( unique=true)
-    private String username;
-    @Column( unique=true)
-    private String email;
-    private String password;
-    private String telegram_user_id;
-    private boolean status_active_account;
+    private int id_users;
+    private String bot_url;
+    private String bot_access_token;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date byu_current_time;
+    private int telegram_user_id;
+    private Date sub_end_time;
 }

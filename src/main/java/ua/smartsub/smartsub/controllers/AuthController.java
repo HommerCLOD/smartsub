@@ -6,24 +6,25 @@ import org.springframework.web.bind.annotation.*;
 import ua.smartsub.smartsub.dao.UserDao;
 import ua.smartsub.smartsub.entity.User;
 
-@RequestMapping(value = "/registration")
 @RestController
-public class RegistrationController {
+public class AuthController {
 
     @Autowired
     private UserDao userDao;
 
-    @PostMapping
+    @PostMapping(value = "/registration")
     @ResponseStatus(HttpStatus.CREATED)
-    public User register(@RequestBody User userRequest) {
+    public String register(@RequestBody User userRequest) {
 
         userDao.save(userRequest);
+        return "Ok";
+    }
+
+
+    @GetMapping(value = "/login")
+    @ResponseStatus(HttpStatus.CREATED)
+    public User login(@RequestBody User userRequest) {
         return userRequest;
     }
-    @GetMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public String test() {
 
-        return "REst";
-    }
 }
