@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 
@@ -19,11 +21,11 @@ public class JWT_tokens {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column( unique=true, nullable=false)
+    @NotBlank
     private int id_users;
-    @Column(nullable=false)
+    @NotBlank
     private String access_token;
-    @Column(nullable=false)
+    @NotBlank
     private String refresh_token;
     @Temporal(TemporalType.TIMESTAMP)
     private Date create_at_time;

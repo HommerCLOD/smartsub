@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
 
 
 @AllArgsConstructor
@@ -15,11 +18,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column( unique=true, nullable = false)
+    @NotBlank
+    @Column( unique=true)
     private String username;
-    @Column( unique=true, nullable = false)
+    @NotBlank
+    @Column( unique=true)
     private String email;
-    @Column( nullable = false)
+    @NotBlank
     private String password;
     private String telegram_user_id;
     private boolean status_active_account;

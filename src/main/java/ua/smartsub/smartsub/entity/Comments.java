@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Data
@@ -15,13 +17,13 @@ public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(nullable=false)
+    @NotBlank
     private String text;
-    @Column(nullable=false)
+    @NotBlank
     private int rating;
-    @Column(nullable=false)
+    @NotBlank
     private int id_Subscribe;
-    @Column(nullable=false)
+    @NotBlank
     private int id_users;
 
 }

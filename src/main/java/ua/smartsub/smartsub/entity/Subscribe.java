@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Data
@@ -14,14 +16,14 @@ public class Subscribe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(nullable = false)
+    @NotBlank
     private String bot_url;
-    @Column(nullable = false)
+    @NotBlank
     private int price;
-    @Column(nullable = false)
+    @NotBlank
     private String description;
     private String bot_image;
-    @Column(nullable = false)
+    @NotBlank
     private String bot_name;
     @Column(unique=true)
     private int id_Subs_tokens;

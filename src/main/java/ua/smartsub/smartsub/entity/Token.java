@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Data
@@ -15,11 +17,13 @@ public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column( unique=true, nullable = false)
+    @NotBlank
+    @Column( unique=true)
     private int id_users;
-    @Column( unique=true, nullable = false)
+    @NotBlank
+    @Column( unique=true)
     private String token;
-    @Column(nullable = false)
+    @NotBlank
     private String type;
 
 
