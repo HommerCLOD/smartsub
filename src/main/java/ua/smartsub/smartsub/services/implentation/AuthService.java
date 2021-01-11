@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import ua.smartsub.smartsub.dao.UserDao;
 import ua.smartsub.smartsub.entity.User;
+import ua.smartsub.smartsub.exception.UniqueUserException;
 
 @Service
 public class AuthService implements IAuthService {
@@ -14,8 +15,10 @@ public class AuthService implements IAuthService {
 
     @Override
     public User registrationUser(User user) {
-        if (userDao.findByName(user.getUsername()) !=null ){
-            throw new RuntimeException("Такий юзер вже існує");
+        if (userDao.findByName(user.getUsername()) !=null){
+            throw new UniqueUserException("Юзер з таким логіном вже існує");
+        } else if (userDao.findByEmail(user.getEmail()) !=null){
+            throw new UniqueUserException("Юзер з таким е-маіл вже існує");
         }
         return userDao.save(user);
     }

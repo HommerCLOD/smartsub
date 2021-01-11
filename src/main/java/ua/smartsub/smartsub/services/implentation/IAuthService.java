@@ -1,7 +1,6 @@
 package ua.smartsub.smartsub.services.implentation;
 
 import ua.smartsub.smartsub.entity.User;
-import ua.smartsub.smartsub.validator.FieldValueExists;
 
 public interface IAuthService  {
     User registrationUser(User user);
