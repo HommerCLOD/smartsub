@@ -19,12 +19,13 @@ public class Token {
     private int id;
     @NotBlank
     @Column( unique=true)
-    private int id_users;
-    @NotBlank
-    @Column( unique=true)
     private String token;
     @NotBlank
     private String type;
+    //    @NotBlank
+    //    @Column( unique=true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
 
 }

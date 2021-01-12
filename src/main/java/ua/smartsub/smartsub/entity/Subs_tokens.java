@@ -10,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @AllArgsConstructor
@@ -21,8 +23,6 @@ public class Subs_tokens {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotBlank
-    private int id_users;
-    @NotBlank
     private String bot_url;
     @NotBlank
     private String bot_access_token;
@@ -32,4 +32,8 @@ public class Subs_tokens {
     private int telegram_user_id;
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime sub_end_time;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<User> user = new HashSet<>();
+
 }

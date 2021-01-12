@@ -23,8 +23,6 @@ public class JWT_tokens {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotBlank
-    private int id_users;
-    @NotBlank
     private String access_token;
     @NotBlank
     private String refresh_token;
@@ -35,4 +33,7 @@ public class JWT_tokens {
 //    @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime create_at_date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 }

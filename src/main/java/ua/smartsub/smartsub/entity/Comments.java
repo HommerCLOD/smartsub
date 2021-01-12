@@ -6,8 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Data
@@ -19,11 +20,13 @@ public class Comments {
     private int id;
     @NotBlank
     private String text;
-    @NotBlank
+    @Min(0)
+    @Max(5)
     private int rating;
-    @NotBlank
-    private int id_Subscribe;
-    @NotBlank
-    private int id_users;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Subscribe subscribe;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private User user;
 
 }

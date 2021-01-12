@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @AllArgsConstructor
@@ -29,4 +31,7 @@ public class User {
     private String password;
     private String telegram_user_id;
     private boolean status_active_account;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Subs_tokens> subs_tokens = new HashSet<>();
 }

@@ -18,14 +18,15 @@ public class Subscribe {
     private int id;
     @NotBlank
     private String bot_url;
-    @NotBlank
+    @NotNull
     private int price;
     @NotBlank
     private String description;
     private String bot_image;
     @NotBlank
     private String bot_name;
-    @Column(unique=true)
-    private int id_Subs_tokens;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Subs_tokens Subs_tokens;
 
 }

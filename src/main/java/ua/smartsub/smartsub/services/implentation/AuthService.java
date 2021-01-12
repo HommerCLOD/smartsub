@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ua.smartsub.smartsub.dao.UserDao;
 import ua.smartsub.smartsub.entity.User;
 import ua.smartsub.smartsub.exception.UniqueUserException;
+import ua.smartsub.smartsub.services.IAuthService;
 
 @Service
 public class AuthService implements IAuthService {

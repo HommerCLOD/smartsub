@@ -1,4 +1,4 @@
-package ua.smartsub.smartsub.services.implentation;
+package ua.smartsub.smartsub.services;
 
 import ua.smartsub.smartsub.entity.User;
 
