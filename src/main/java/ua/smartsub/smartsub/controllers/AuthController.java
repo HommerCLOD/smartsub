@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ua.smartsub.smartsub.entity.User;
+import ua.smartsub.smartsub.security.jwt.JwtProvider;
 import ua.smartsub.smartsub.services.IAuthService;
 
 import javax.validation.Valid;
@@ -13,19 +14,28 @@ public class AuthController {
 
     @Autowired
     private IAuthService authService;
+    @Autowired
+    private JwtProvider jwtProvider;
 
-    @PostMapping(value = "/registration")
+    @PostMapping(value = "/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public User register(@RequestBody @Valid User user) {
-
-        return authService.registrationUser(user);
+    public User registerUser(@RequestBody @Valid User user) {
+        return authService.saveUser(user);
     }
 
 
-    @GetMapping(value = "/login")
+    @PostMapping(value = "/login")
     @ResponseStatus(HttpStatus.CREATED)
-    public User login(@RequestBody @Valid User userRequest) {
-        return userRequest;
+    public AuthResponse login(@RequestBody @Valid User userRequest) {
+        User user = authService.findByLoginAndPassword(userRequest.getUsername(),userRequest.getPassword());
+        String token = jwtProvider.generateToken(user.getUsername());
+        return new AuthResponse(token);
     }
+
+    @GetMapping(value = "/hello")
+    public String Hello() {
+        return "Hello";
+    }
+
 
 }

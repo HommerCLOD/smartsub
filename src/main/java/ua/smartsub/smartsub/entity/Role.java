@@ -6,24 +6,18 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
 @Entity
-public class Token {
-
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotBlank
-    @Column( unique=true)
-    private String token;
-    @NotBlank
-    private String type;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
-
-
+    private String name;
 }

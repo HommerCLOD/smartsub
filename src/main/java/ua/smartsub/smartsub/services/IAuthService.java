@@ -3,7 +3,7 @@ package ua.smartsub.smartsub.services;
 import ua.smartsub.smartsub.entity.User;
 
 public interface IAuthService  {
-    User registrationUser(User user);
+    User saveUser(User user);
 
 //    JwtAuthenticationResponse loginUser(LoginRequest loginRequest);
 //
@@ -14,4 +14,6 @@ public interface IAuthService  {
 //    void recoverPassword(RecoverUserPasswordRequest recoverUserPasswordRequest);
 
     void activateAccount(String token);
+
+    User findByLoginAndPassword(String login, String password);
 }
