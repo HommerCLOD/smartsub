@@ -13,13 +13,11 @@ public class CustomUserDetails implements UserDetails {
     private String login;
     private String password;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
-    private boolean status_active_account;
 
     public static CustomUserDetails fromUserToCustomUserDetails(User user) {
         CustomUserDetails c = new CustomUserDetails();
         c.login = user.getUsername();
         c.password = user.getPassword();
-        c.status_active_account = user.getStatus_active_account();
         c.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName()));
         return c;
     }
@@ -44,12 +42,6 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
-
-// Потрібно прикрути Емаіл перевірку чи активований користувач
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return status_active_account;
-//    }
     @Override
     public boolean isAccountNonLocked() {
         return true;

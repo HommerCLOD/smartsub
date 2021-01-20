@@ -18,14 +18,15 @@ import java.util.Date;
 @Log
 public class JwtProvider   {
 
-    private String jwtSecret = "dasdasdasda";
+    private String jwtSecret = "SECRET key";
+
 
     public String generateToken(String login) {
-        Date date = Date.from(LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
         return Jwts.builder()
                 .setSubject(login)
                 .setExpiration(date)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret.getBytes())
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 
@@ -33,14 +34,6 @@ public class JwtProvider   {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
-        } catch (ExpiredJwtException expEx) {
-            log.severe("Token expired");
-        } catch (UnsupportedJwtException unsEx) {
-            log.severe("Unsupported jwt");
-        } catch (MalformedJwtException mjEx) {
-            log.severe("Malformed jwt");
-        } catch (SignatureException sEx) {
-            log.severe("Invalid signature");
         } catch (Exception e) {
             log.severe("invalid token");
         }

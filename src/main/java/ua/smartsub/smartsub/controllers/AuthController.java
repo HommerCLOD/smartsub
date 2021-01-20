@@ -3,6 +3,7 @@ package ua.smartsub.smartsub.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ua.smartsub.smartsub.DTO.LoginDTO;
 import ua.smartsub.smartsub.entity.User;
 import ua.smartsub.smartsub.security.jwt.JwtProvider;
 import ua.smartsub.smartsub.services.IAuthService;
@@ -26,8 +27,8 @@ public class AuthController {
 
     @PostMapping(value = "/login")
     @ResponseStatus(HttpStatus.CREATED)
-    public AuthResponse login(@RequestBody @Valid User userRequest) {
-        User user = authService.findByLoginAndPassword(userRequest.getUsername(),userRequest.getPassword());
+    public AuthResponse login(@RequestBody @Valid LoginDTO loginDTO) {
+        User user = authService.findByLoginAndPassword(loginDTO.getUsername(),loginDTO.getPassword());
         String token = jwtProvider.generateToken(user.getUsername());
         return new AuthResponse(token);
     }
