@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 public class Ads_slider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @NotBlank
     private String web_url;
     @NotBlank

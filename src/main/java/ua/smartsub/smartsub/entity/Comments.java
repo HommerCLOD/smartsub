@@ -17,7 +17,7 @@ import javax.validation.constraints.NotBlank;
 public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @NotBlank
     private String text;
     @Min(0)

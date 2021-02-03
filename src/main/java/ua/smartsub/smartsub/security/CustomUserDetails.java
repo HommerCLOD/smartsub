@@ -8,7 +8,7 @@ import ua.smartsub.smartsub.entity.User;
 import java.util.Collection;
 import java.util.Collections;
 
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails extends User implements UserDetails {
 
     private String login;
     private String password;

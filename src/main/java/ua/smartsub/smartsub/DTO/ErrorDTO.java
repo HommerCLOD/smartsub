@@ -1,10 +1,13 @@
-package ua.smartsub.smartsub.controllers;
+package ua.smartsub.smartsub.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Data
 @AllArgsConstructor
-public class ErrorResponse {
+@NoArgsConstructor
+public class ErrorDTO {
     private int status;
     private String data;
     private String message;

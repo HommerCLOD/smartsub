@@ -21,7 +21,7 @@ import java.util.Set;
 public class Subs_tokens {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @NotBlank
     private String bot_url;
     @NotBlank

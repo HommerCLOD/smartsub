@@ -3,6 +3,7 @@ package ua.smartsub.smartsub.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ua.smartsub.smartsub.audit.DateAudit;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -17,10 +18,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends DateAudit{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @NotBlank
     @Column( unique=true)
     private String username;
@@ -30,7 +31,8 @@ public class User {
     @NotBlank
     private String password;
     private String telegram_user_id;
-    private boolean status_active_account;
+    @Column(name = "IS_EMAIL_VERIFIED", nullable = false)
+    private Boolean emailVerified;
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<Subs_tokens> subs_tokens = new HashSet<>();
     @ManyToOne(fetch = FetchType.EAGER)
