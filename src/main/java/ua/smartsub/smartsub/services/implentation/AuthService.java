@@ -8,16 +8,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import ua.smartsub.smartsub.DTO.*;
+import ua.smartsub.smartsub.model.DTO.*;
 import ua.smartsub.smartsub.dao.RoleDao;
-import ua.smartsub.smartsub.entity.*;
+import ua.smartsub.smartsub.model.entity.*;
 import ua.smartsub.smartsub.exception.ResourceNotFoundException;
 import ua.smartsub.smartsub.exception.TokenRefreshException;
 import ua.smartsub.smartsub.exception.UniqueUserException;
 import ua.smartsub.smartsub.exception.UpdatePasswordException;
 import ua.smartsub.smartsub.security.CustomUserDetails;
 import ua.smartsub.smartsub.security.jwt.JwtProvider;
-import ua.smartsub.smartsub.services.IAuthService;
+import ua.smartsub.smartsub.services.*;
 
 import java.util.Optional;
 
@@ -27,7 +27,7 @@ public class AuthService implements IAuthService {
 
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
     @Autowired
     private RoleDao roleDao;
     @Autowired
@@ -35,15 +35,15 @@ public class AuthService implements IAuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private UserDeviceService userDeviceService;
+    private IUserDeviceService userDeviceService;
     @Autowired
-    private RefreshTokenService refreshTokenService;
+    private IRefreshTokenService refreshTokenService;
     @Autowired
     private JwtProvider tokenProvider;
     @Autowired
     private EmailVerificationTokenService emailVerificationTokenService;
     @Autowired
-    private PasswordResetTokenService passwordResetTokenService;
+    private IPasswordResetTokenService passwordResetTokenService;
 
     @Override
     public Optional<User> registerUser(RegisterDTO userDTO) {
@@ -66,7 +66,7 @@ public class AuthService implements IAuthService {
     }
 
     public User findByLoginAndPassword(String username, String password) {
-        User user = userService.findByName(username);
+        User user = userService.findByName(username).orElse(null);
         if (user != null) {
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return user;
@@ -186,7 +186,7 @@ public class AuthService implements IAuthService {
         return tokenProvider.generateAccessToken(username);
     }
 
-    public User findByLogin(String login) {
+    public Optional<User> findByLogin(String login) {
         return userService.findByName(login);
     }
 

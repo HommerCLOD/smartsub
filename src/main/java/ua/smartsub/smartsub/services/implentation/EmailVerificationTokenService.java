@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ua.smartsub.smartsub.dao.EmailVerificationTokenDao;
-import ua.smartsub.smartsub.entity.EmailVerificationToken;
-import ua.smartsub.smartsub.entity.User;
+import ua.smartsub.smartsub.model.entity.EmailVerificationToken;
 import ua.smartsub.smartsub.exception.InvalidTokenRequestException;
 import ua.smartsub.smartsub.model.TokenStatus;
+import ua.smartsub.smartsub.model.entity.User;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class EmailVerificationTokenService {
+public class EmailVerificationTokenService  {
 
     @Autowired
     private EmailVerificationTokenDao emailVerificationTokenDao;

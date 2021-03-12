@@ -1,7 +1,7 @@
 package ua.smartsub.smartsub.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ua.smartsub.smartsub.entity.PasswordResetToken;
+import ua.smartsub.smartsub.model.entity.PasswordResetToken;
 
 import java.util.Optional;
 

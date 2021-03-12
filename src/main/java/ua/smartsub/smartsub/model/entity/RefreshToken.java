@@ -1,10 +1,9 @@
-package ua.smartsub.smartsub.entity;
+package ua.smartsub.smartsub.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
-import ua.smartsub.smartsub.audit.DateAudit;
 
 import javax.persistence.*;
 import java.time.Instant;

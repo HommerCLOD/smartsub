@@ -11,13 +11,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
-import ua.smartsub.smartsub.DTO.*;
-import ua.smartsub.smartsub.entity.EmailVerificationToken;
-import ua.smartsub.smartsub.entity.RefreshToken;
+import ua.smartsub.smartsub.model.DTO.*;
+import ua.smartsub.smartsub.model.entity.EmailVerificationToken;
+import ua.smartsub.smartsub.model.entity.RefreshToken;
+
 import ua.smartsub.smartsub.event.OnRegenerateEmailVerificationEvent;
 import ua.smartsub.smartsub.event.OnUserAccountChangeEvent;
 import ua.smartsub.smartsub.event.OnUserRegistrationCompleteEvent;
 import ua.smartsub.smartsub.exception.*;
+import ua.smartsub.smartsub.model.entity.User;
 import ua.smartsub.smartsub.security.CustomUserDetails;
 import ua.smartsub.smartsub.security.jwt.JwtProvider;
 import ua.smartsub.smartsub.services.IAuthService;
@@ -106,7 +108,7 @@ public class AuthController {
         return Optional.ofNullable(newEmailToken.getUser())
                 .map(registeredUser -> {
                     UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/registrationConfirmation");
-                    OnRegenerateEmailVerificationEvent regenerateEmailVerificationEvent = new OnRegenerateEmailVerificationEvent(registeredUser, urlBuilder, newEmailToken);
+                    OnRegenerateEmailVerificationEvent regenerateEmailVerificationEvent = new OnRegenerateEmailVerificationEvent((User) registeredUser, urlBuilder, newEmailToken);
                     applicationEventPublisher.publishEvent(regenerateEmailVerificationEvent);
                     return ResponseEntity.ok(new ApiResponse("Email verification resent successfully", true));
                 })

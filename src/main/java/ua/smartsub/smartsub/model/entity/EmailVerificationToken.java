@@ -1,4 +1,4 @@
-package ua.smartsub.smartsub.entity;
+package ua.smartsub.smartsub.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

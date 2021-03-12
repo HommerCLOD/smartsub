@@ -1,4 +1,4 @@
-package ua.smartsub.smartsub.DTO;
+package ua.smartsub.smartsub.model.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

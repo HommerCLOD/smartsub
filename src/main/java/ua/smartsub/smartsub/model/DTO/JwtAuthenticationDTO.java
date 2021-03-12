@@ -1,4 +1,4 @@
-package ua.smartsub.smartsub.DTO;
+package ua.smartsub.smartsub.model.DTO;
 
 import com.sun.tracing.dtrace.ArgsAttributes;
 import lombok.AllArgsConstructor;

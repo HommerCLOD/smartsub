@@ -1,8 +1,8 @@
 package ua.smartsub.smartsub.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ua.smartsub.smartsub.entity.RefreshToken;
-import ua.smartsub.smartsub.entity.UserDevice;
+import ua.smartsub.smartsub.model.entity.RefreshToken;
+import ua.smartsub.smartsub.model.entity.UserDevice;
 
 import java.util.Optional;
 

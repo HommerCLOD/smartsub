@@ -1,7 +1,7 @@
 package ua.smartsub.smartsub.event;
 
 import org.springframework.context.ApplicationEvent;
-import ua.smartsub.smartsub.entity.User;
+import ua.smartsub.smartsub.model.entity.User;
 
 
 public class OnUserAccountChangeEvent extends ApplicationEvent {

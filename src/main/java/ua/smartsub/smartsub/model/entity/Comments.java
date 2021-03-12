@@ -1,4 +1,4 @@
-package ua.smartsub.smartsub.entity;
+package ua.smartsub.smartsub.model.entity;
 
 
 import lombok.AllArgsConstructor;
@@ -15,17 +15,24 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Entity
 public class Comments {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id", updatable=false, nullable=false)
     private Long id;
+
     @NotBlank
+    @Column(name="text", nullable=false)
     private String text;
+
     @Min(0)
     @Max(5)
+    @Column(name="rating")
     private int rating;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Subscribe subscribe;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User user;
 

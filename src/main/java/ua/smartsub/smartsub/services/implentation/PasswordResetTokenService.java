@@ -4,15 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ua.smartsub.smartsub.dao.PasswordResetTokenDao;
-import ua.smartsub.smartsub.entity.PasswordResetToken;
+import ua.smartsub.smartsub.model.entity.PasswordResetToken;
 import ua.smartsub.smartsub.exception.InvalidTokenRequestException;
+import ua.smartsub.smartsub.services.IPasswordResetTokenService;
 
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class PasswordResetTokenService {
+public class PasswordResetTokenService implements IPasswordResetTokenService {
 
     @Autowired
     private PasswordResetTokenDao passwordResetTokenDao;

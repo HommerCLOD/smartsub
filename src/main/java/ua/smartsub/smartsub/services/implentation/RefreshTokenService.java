@@ -5,8 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ua.smartsub.smartsub.dao.RefreshTokenDao;
-import ua.smartsub.smartsub.entity.RefreshToken;
+import ua.smartsub.smartsub.model.entity.RefreshToken;
 import ua.smartsub.smartsub.exception.RefreshTokenException;
+import ua.smartsub.smartsub.services.IRefreshTokenService;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -14,7 +15,7 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-public class RefreshTokenService {
+public class RefreshTokenService implements IRefreshTokenService {
     @Value("${app.token.refresh.duration}")
     private Long refreshTokenDurationMs;
 

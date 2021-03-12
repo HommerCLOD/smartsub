@@ -2,7 +2,7 @@ package ua.smartsub.smartsub.event;
 
 import org.springframework.context.ApplicationEvent;
 import org.springframework.web.util.UriComponentsBuilder;
-import ua.smartsub.smartsub.entity.PasswordResetToken;
+import ua.smartsub.smartsub.model.entity.PasswordResetToken;
 
 public class OnGenerateResetLinkEvent extends ApplicationEvent {
 

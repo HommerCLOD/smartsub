@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import ua.smartsub.smartsub.entity.User;
+import ua.smartsub.smartsub.model.entity.User;
 import ua.smartsub.smartsub.event.OnUserAccountChangeEvent;
 import ua.smartsub.smartsub.exception.MailSendException;
 import ua.smartsub.smartsub.services.implentation.MailService;

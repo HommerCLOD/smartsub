@@ -1,13 +1,14 @@
 package ua.smartsub.smartsub.services;
 
 import org.springframework.security.core.Authentication;
-import ua.smartsub.smartsub.DTO.LoginDTO;
-import ua.smartsub.smartsub.DTO.PasswordResetDTO;
-import ua.smartsub.smartsub.DTO.RefreshTokenDTO;
-import ua.smartsub.smartsub.DTO.RegisterDTO;
-import ua.smartsub.smartsub.entity.EmailVerificationToken;
-import ua.smartsub.smartsub.entity.RefreshToken;
-import ua.smartsub.smartsub.entity.User;
+import ua.smartsub.smartsub.model.DTO.PasswordResetDTO;
+import ua.smartsub.smartsub.model.DTO.RefreshTokenDTO;
+import ua.smartsub.smartsub.model.DTO.RegisterDTO;
+import ua.smartsub.smartsub.model.DTO.UpdatePasswordDTO;
+import ua.smartsub.smartsub.model.entity.EmailVerificationToken;
+import ua.smartsub.smartsub.model.entity.RefreshToken;
+import ua.smartsub.smartsub.model.DTO.*;
+import ua.smartsub.smartsub.model.entity.User;
 import ua.smartsub.smartsub.security.CustomUserDetails;
 
 import java.util.Optional;
@@ -34,4 +35,9 @@ public interface IAuthService {
     Boolean usernameAlreadyExists(String username);
 
     Boolean emailAlreadyExists(String email);
+
+    Optional<User> updatePassword(CustomUserDetails customUserDetails,
+                                  UpdatePasswordDTO updatePasswordRequest);
+
+    Optional<User> findByLogin(String login);
 }

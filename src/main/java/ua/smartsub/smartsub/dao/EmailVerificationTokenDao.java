@@ -2,7 +2,7 @@ package ua.smartsub.smartsub.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import ua.smartsub.smartsub.entity.EmailVerificationToken;
+import ua.smartsub.smartsub.model.entity.EmailVerificationToken;
 
 import java.util.Optional;
 

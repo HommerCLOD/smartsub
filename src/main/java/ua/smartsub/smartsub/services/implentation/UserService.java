@@ -3,19 +3,20 @@ package ua.smartsub.smartsub.services.implentation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.smartsub.smartsub.DTO.LogOutDTO;
+import ua.smartsub.smartsub.model.DTO.LogOutDTO;
 import ua.smartsub.smartsub.annotation.CurrentUser;
 import ua.smartsub.smartsub.dao.UserDao;
-import ua.smartsub.smartsub.entity.User;
-import ua.smartsub.smartsub.entity.UserDevice;
+import ua.smartsub.smartsub.model.entity.User;
+import ua.smartsub.smartsub.model.entity.UserDevice;
 import ua.smartsub.smartsub.exception.UserLogoutException;
 import ua.smartsub.smartsub.security.CustomUserDetails;
+import ua.smartsub.smartsub.services.IUserService;
 
 import java.util.Optional;
 
 @Service
 @Slf4j
-public class UserService {
+public class UserService implements IUserService {
 
     @Autowired
     private  UserDeviceService userDeviceService;
@@ -29,7 +30,7 @@ public class UserService {
     }
 
 
-    public User findByName(String username) {
+    public Optional<User> findByName(String username) {
     return userDao.findByName(username);
     }
 

@@ -3,8 +3,8 @@ package ua.smartsub.smartsub.event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.web.util.UriComponentsBuilder;
-import ua.smartsub.smartsub.entity.EmailVerificationToken;
-import ua.smartsub.smartsub.entity.User;
+import ua.smartsub.smartsub.model.entity.EmailVerificationToken;
+import ua.smartsub.smartsub.model.entity.User;
 
 public class OnRegenerateEmailVerificationEvent extends ApplicationEvent {
 

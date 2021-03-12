@@ -3,17 +3,18 @@ package ua.smartsub.smartsub.services.implentation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.smartsub.smartsub.DTO.DeviceInfo;
+import ua.smartsub.smartsub.model.DTO.DeviceInfo;
 import ua.smartsub.smartsub.dao.UserDeviceDao;
-import ua.smartsub.smartsub.entity.RefreshToken;
-import ua.smartsub.smartsub.entity.UserDevice;
+import ua.smartsub.smartsub.model.entity.RefreshToken;
+import ua.smartsub.smartsub.model.entity.UserDevice;
 import ua.smartsub.smartsub.exception.TokenRefreshException;
+import ua.smartsub.smartsub.services.IUserDeviceService;
 
 import java.util.Optional;
 
 @Service
 @Slf4j
-public class UserDeviceService {
+public class UserDeviceService implements IUserDeviceService {
 
     @Autowired
     private  UserDeviceDao userDeviceDao;
@@ -39,7 +40,7 @@ public class UserDeviceService {
         userDevice.setIsRefreshActive(true);
         return userDevice;
     }
-    void verifyRefreshAvailability(RefreshToken refreshToken) {
+    public void verifyRefreshAvailability(RefreshToken refreshToken) {
         UserDevice userDevice = findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new TokenRefreshException(refreshToken.getToken(), "No device found for the matching token. Please login again"));
 

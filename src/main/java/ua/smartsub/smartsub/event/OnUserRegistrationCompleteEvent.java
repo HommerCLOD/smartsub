@@ -3,7 +3,7 @@ package ua.smartsub.smartsub.event;
 import lombok.Data;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.web.util.UriComponentsBuilder;
-import ua.smartsub.smartsub.entity.User;
+import ua.smartsub.smartsub.model.entity.User;
 
 @Data
 public class OnUserRegistrationCompleteEvent extends ApplicationEvent {

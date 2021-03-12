@@ -1,4 +1,4 @@
-package ua.smartsub.smartsub.entity;
+package ua.smartsub.smartsub.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,24 +6,19 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
 @Entity
-public class Token {
-
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ROLE_ID", updatable = false, nullable = false)
     private Long id;
-    @NotBlank
-    @Column( unique=true)
-    private String token;
-    @NotBlank
-    private String type;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
 
-
+    @NotBlank
+    @Column(name = "ROLE_NAME", unique = true, nullable = false)
+    private String name;
 }

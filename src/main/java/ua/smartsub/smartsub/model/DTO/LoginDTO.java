@@ -1,4 +1,4 @@
-package ua.smartsub.smartsub.DTO;
+package ua.smartsub.smartsub.model.DTO;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,6 @@ public class LoginDTO {
     @ApiModelProperty(value = "Registered username", allowableValues = "NonEmpty String", allowEmptyValue = false, required = true)
     private String username;
 
-    @NotEmpty(message = "Login Email can be null but not blank")
     @ApiModelProperty(value = "User registered email", allowableValues = "NonEmpty String")
     private String email;
 

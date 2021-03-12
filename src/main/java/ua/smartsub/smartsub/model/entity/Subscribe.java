@@ -1,31 +1,41 @@
-package ua.smartsub.smartsub.entity;
+package ua.smartsub.smartsub.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ua.smartsub.smartsub.audit.DateAudit;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
 @Entity
-public class Subscribe extends DateAudit {
+public class Subscribe  {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "ID")
+    private long id;
+
     @NotBlank
-    private String bot_url;
-    @NotNull
-    private Long price;
+    @Column(name = "BOT_URL")
+    private String url;
+
+    @Column(name = "PRICE")
+    private Double price;
+
     @NotBlank
+    @Column(name = "DESCRIPTION")
     private String description;
-    private String bot_image;
+
     @NotBlank
-    private String bot_name;
+    @Column(name = "BOT_IMAGE")
+    private String image;
+
+    @NotBlank
+    @Column(name = "BOT_NAME")
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Subs_tokens Subs_tokens;

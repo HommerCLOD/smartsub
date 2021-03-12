@@ -10,7 +10,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import ua.smartsub.smartsub.DTO.Mail;
+import ua.smartsub.smartsub.model.DTO.Mail;
+import ua.smartsub.smartsub.services.IMailService;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -19,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class MailService {
+public class MailService implements IMailService {
 
     private  JavaMailSender mailSender;
     private Configuration templateConfiguration;

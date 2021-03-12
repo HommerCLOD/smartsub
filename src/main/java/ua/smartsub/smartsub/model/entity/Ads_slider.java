@@ -1,4 +1,4 @@
-package ua.smartsub.smartsub.entity;
+package ua.smartsub.smartsub.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,18 +6,20 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
-import java.util.Set;
-
 
 @AllArgsConstructor
-@Data
-@NoArgsConstructor
 @Entity
-public class Role {
+@NoArgsConstructor
+@Data
+public class Ads_slider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id", updatable=false, nullable=false)
     private Long id;
+
     @NotBlank
-    private String name;
+    private String web_url;
+
+    @NotBlank
+    private String image_url;
 }
