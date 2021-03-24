@@ -1,19 +1,43 @@
 package ua.smartsub.smartsub.services;
 
-import ua.smartsub.smartsub.entity.User;
+import org.springframework.security.core.Authentication;
+import ua.smartsub.smartsub.model.DTO.PasswordResetDTO;
+import ua.smartsub.smartsub.model.DTO.RefreshTokenDTO;
+import ua.smartsub.smartsub.model.DTO.RegisterDTO;
+import ua.smartsub.smartsub.model.DTO.UpdatePasswordDTO;
+import ua.smartsub.smartsub.model.entity.EmailVerificationToken;
+import ua.smartsub.smartsub.model.entity.RefreshToken;
+import ua.smartsub.smartsub.model.DTO.*;
+import ua.smartsub.smartsub.model.entity.User;
+import ua.smartsub.smartsub.security.CustomUserDetails;
 
-public interface IAuthService  {
-    User saveUser(User user);
+import java.util.Optional;
 
-//    JwtAuthenticationResponse loginUser(LoginRequest loginRequest);
-//
-//    void sendMailForRecoverPassword (String email);
-//
-//    void checkTokenForRecoverPassword(RecoverUserPasswordRequest recoverUserPasswordRequest);
-//
-//    void recoverPassword(RecoverUserPasswordRequest recoverUserPasswordRequest);
+public interface IAuthService {
+    Optional<User> registerUser(RegisterDTO userDTO);
 
-    void activateAccount(String token);
+    User findByLoginAndPassword(String username, String password);
 
-    User findByLoginAndPassword(String login, String password);
+    Optional<Authentication> authenticateUser(LoginDTO loginDTO);
+
+    Optional<RefreshToken> createAndPersistRefreshTokenForDevice(Authentication authentication, LoginDTO loginDTO);
+
+    String generateToken(CustomUserDetails customUserDetails);
+
+    Optional<User> confirmEmailRegistration(String emailToken);
+
+    Optional<EmailVerificationToken> recreateRegistrationToken(String existingToken);
+
+    Optional<User> resetPassword(PasswordResetDTO passwordResetDTO);
+
+    Optional<String> refreshJwtToken(RefreshTokenDTO tokenRefreshRequest);
+
+    Boolean usernameAlreadyExists(String username);
+
+    Boolean emailAlreadyExists(String email);
+
+    Optional<User> updatePassword(CustomUserDetails customUserDetails,
+                                  UpdatePasswordDTO updatePasswordRequest);
+
+    Optional<User> findByLogin(String login);
 }

@@ -1,48 +1,74 @@
 package ua.smartsub.smartsub.security.jwt;
 
 import io.jsonwebtoken.*;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
+import ua.smartsub.smartsub.exception.InvalidTokenRequestException;
+import ua.smartsub.smartsub.security.CustomUserDetails;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.Instant;
 import java.util.Date;
 
 @Component
-@Log
-public class JwtProvider   {
+@Slf4j
+public class JwtProvider {
 
-    private String jwtSecret = "SECRET key";
+    @Value("${app.jwt.secret}")
+    private String jwtSecret;
+
+    @Value("${app.jwt.expiration}")
+    private Long jwtExpirationInMs;
+
+    @Value("${app.jwt.claims.refresh.name}")
+    private String jwtClaimRefreshName;
+
+    public String generateToken(CustomUserDetails customUserDetails) {
+        return generateAccessToken(customUserDetails.getUsername());
+    }
 
 
-    public String generateToken(String login) {
-        Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
+    public String generateAccessToken(String login) {
+        Instant expiryDate = Instant.now().plusMillis(jwtExpirationInMs);
         return Jwts.builder()
                 .setSubject(login)
-                .setExpiration(date)
+                .setIssuedAt(Date.from(Instant.now()))
+                .setExpiration(Date.from(expiryDate))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
-        } catch (Exception e) {
-            log.severe("invalid token");
+        } catch (SignatureException ex) {
+            log.error("Invalid JWT signature");
+            throw new InvalidTokenRequestException("JWT", authToken, "Incorrect signature");
+        } catch (MalformedJwtException ex) {
+            log.error("Invalid JWT token");
+            throw new InvalidTokenRequestException("JWT", authToken, "Malformed jwt token");
+        } catch (ExpiredJwtException ex) {
+            log.error("Expired JWT token");
+            throw new InvalidTokenRequestException("JWT", authToken, "Token expired. Refresh required.");
+        } catch (UnsupportedJwtException ex) {
+            log.error("Unsupported JWT token");
+            throw new InvalidTokenRequestException("JWT", authToken, "Unsupported JWT token");
+        } catch (IllegalArgumentException ex) {
+            log.error("JWT claims string is empty.");
+            throw new InvalidTokenRequestException("JWT", authToken, "Illegal argument token");
         }
-        return false;
     }
 
     public String getLoginFromToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
         return claims.getSubject();
     }
 
+    public Long getExpiryDuration() {
+        return jwtExpirationInMs;
+    }
 }

@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 import ua.smartsub.smartsub.dao.CommentsDao;
 import ua.smartsub.smartsub.dao.SubscribeDao;
 import ua.smartsub.smartsub.dao.UserDao;
-import ua.smartsub.smartsub.entity.Comments;
-import ua.smartsub.smartsub.entity.Subscribe;
-import ua.smartsub.smartsub.entity.User;
+import ua.smartsub.smartsub.model.entity.Comments;
+import ua.smartsub.smartsub.model.entity.Subscribe;
+import ua.smartsub.smartsub.model.entity.User;
 import ua.smartsub.smartsub.exception.UniqueUserException;
 import ua.smartsub.smartsub.services.ICommentsService;
 
@@ -21,11 +21,8 @@ public class CommentsService implements ICommentsService {
     private CommentsDao commentsDao;
     @Override
     public Comments saveComment(Comments comment, int user_id, int subscribe_id) {
-        User user = userDao.findById(user_id);
-        Subscribe subscribe = subscribeDao.findById(subscribe_id);
-        if (user == null || subscribe == null){
-            throw new UniqueUserException("Такий юзер або Пост не існує");
-        }
+        User user = userDao.findById(user_id).orElseThrow(()->new UniqueUserException("Такий Юзер не існує"));
+        Subscribe subscribe = subscribeDao.findById(subscribe_id).orElseThrow(()->new UniqueUserException("Такий Пост не існує"));
         comment.setUser(user);
         comment.setSubscribe(subscribe);
         return commentsDao.save(comment);

@@ -3,7 +3,7 @@ package ua.smartsub.smartsub.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ua.smartsub.smartsub.entity.Comments;
+import ua.smartsub.smartsub.model.entity.Comments;
 import ua.smartsub.smartsub.services.implentation.CommentsService;
 
 import javax.validation.Valid;
