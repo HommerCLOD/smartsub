@@ -4,6 +4,7 @@ import ua.smartsub.smartsub.model.entity.Subscribe;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface ISubscribeService {
     Optional<Subscribe> saveSubscribe (Subscribe subscribe);

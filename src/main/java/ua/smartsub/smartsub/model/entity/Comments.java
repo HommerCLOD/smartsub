@@ -30,6 +30,9 @@ public class Comments {
     @Column(name="rating")
     private int rating;
 
+    @Column(name = "IS_COMMENT_VERIFIED", nullable = false)
+    private Boolean commentVerified;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Subscribe subscribe;
 

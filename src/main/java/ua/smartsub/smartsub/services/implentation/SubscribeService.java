@@ -8,8 +8,10 @@ import ua.smartsub.smartsub.model.entity.Subscribe;
 import ua.smartsub.smartsub.exception.UniqueUserException;
 import ua.smartsub.smartsub.services.ISubscribeService;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -70,4 +72,6 @@ public class SubscribeService implements ISubscribeService {
 
         return Optional.empty();
     }
+
+
 }

@@ -12,6 +12,7 @@ import ua.smartsub.smartsub.services.ISubscribeService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/subscribe")
@@ -32,6 +33,12 @@ public class SubscribeController {
     @ResponseStatus(HttpStatus.FOUND)
     public Subscribe findSubscribeById(@PathVariable long id) {
         return subscribeService.findSubscribeById(id).orElseThrow(() -> new SubscribeFindException(id,"Error find Subscribe by id"));
+    }
+
+    @GetMapping(value = "/all")
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<Subscribe> allSubscribes() {
+        return subscribeService.findSubscribeByAll(null);
     }
 
     @GetMapping

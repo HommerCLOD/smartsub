@@ -12,7 +12,7 @@ public interface SubscribeDao extends JpaRepository<Subscribe,Long> {
     @Query("select s from Subscribe s where s.id=:id ")
     Optional<Subscribe> findById(int id);
 
-    @Query("SELECT s FROM Subscribe s WHERE CONCAT(s.name, s.description, s.id, s.price) LIKE %?1%")
+    @Query("SELECT s FROM Subscribe s WHERE CONCAT(s.name, s.description) LIKE %?1%")
     List<Subscribe> findAll(String keyword);
 
     Boolean existsByName(String name);
