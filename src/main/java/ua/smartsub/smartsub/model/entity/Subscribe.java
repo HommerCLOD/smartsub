@@ -38,10 +38,15 @@ public class Subscribe  {
     @Column(name = "BOT_NAME")
     private String name;
 
+    @Column(name = "hide", nullable = false)
+    private Boolean hideSubscribe;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Subs_tokens Subs_tokens;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Comments> comments;
+
+
 
 }

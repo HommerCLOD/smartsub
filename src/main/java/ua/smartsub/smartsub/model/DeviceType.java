@@ -6,10 +6,15 @@ public enum DeviceType {
     /**
      * Android device type
      */
-    DEVICE_TYPE_ANDROID,
+    DEVICE_TYPE_PHONE,
+
+    /**
+     * PC device type
+     */
+    DEVICE_TYPE_PC,
 
     /**
      * IOS device type
      */
-    DEVICE_TYPE_IOS,
+    OTHER_DEVICE,
 }
