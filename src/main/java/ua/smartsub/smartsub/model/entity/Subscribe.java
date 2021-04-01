@@ -44,9 +44,5 @@ public class Subscribe  {
     @ManyToOne(fetch = FetchType.LAZY)
     private Subs_tokens Subs_tokens;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<Comments> comments;
-
-
 
 }
