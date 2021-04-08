@@ -2,19 +2,23 @@ package ua.smartsub.smartsub.services.implentation;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
+import ua.smartsub.smartsub.event.OnRegenerateEmailVerificationEvent;
+import ua.smartsub.smartsub.event.OnUserAccountChangeEvent;
+import ua.smartsub.smartsub.event.OnUserRegistrationCompleteEvent;
+import ua.smartsub.smartsub.exception.*;
 import ua.smartsub.smartsub.model.DTO.*;
 import ua.smartsub.smartsub.dao.RoleDao;
 import ua.smartsub.smartsub.model.entity.*;
-import ua.smartsub.smartsub.exception.ResourceNotFoundException;
-import ua.smartsub.smartsub.exception.TokenRefreshException;
-import ua.smartsub.smartsub.exception.UniqueUserException;
-import ua.smartsub.smartsub.exception.UpdatePasswordException;
 import ua.smartsub.smartsub.security.CustomUserDetails;
 import ua.smartsub.smartsub.security.jwt.JwtProvider;
 import ua.smartsub.smartsub.services.*;
@@ -44,25 +48,38 @@ public class AuthService implements IAuthService {
     private EmailVerificationTokenService emailVerificationTokenService;
     @Autowired
     private IPasswordResetTokenService passwordResetTokenService;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
 
     @Override
-    public Optional<User> registerUser(RegisterDTO userDTO) {
-        if (usernameAlreadyExists(userDTO.getUsername())) {
-            log.error("Username already exists: " + userDTO.getUsername());
+    public ResponseEntity registerUser(RegisterDTO registerDTO) {
+        if (usernameAlreadyExists(registerDTO.getUsername())) {
+            log.error("Username already exists: " + registerDTO.getUsername());
             throw new UniqueUserException("Юзер з таким логіном вже існує");
-        } else if (emailAlreadyExists(userDTO.getEmail())) {
-            log.error("Email already exists: " + userDTO.getEmail());
+        } else if (emailAlreadyExists(registerDTO.getEmail())) {
+            log.error("Email already exists: " + registerDTO.getEmail());
             throw new UniqueUserException("Юзер з таким е-маіл вже існує");
         }
-        log.info("Trying to register new user [" + userDTO.getUsername() + "]");
+        log.info("Trying to register new user [" + registerDTO.getUsername() + "]");
         Role userRole = roleDao.findByName("ROLE_USER");
         User user = new User();
-        user.setUsername(userDTO.getUsername());
-        user.setEmail(userDTO.getEmail());
+        user.setUsername(registerDTO.getUsername());
+        user.setEmail(registerDTO.getEmail());
         user.setRole(userRole);
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         user.setEmailVerified(false);
-        return Optional.ofNullable(userService.save(user));
+
+        return Optional.ofNullable(userService.save(user))
+                .map(us -> {
+                    UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path("/registrationConfirmation");
+                    OnUserRegistrationCompleteEvent onUserRegistrationCompleteEvent = new OnUserRegistrationCompleteEvent(us, urlBuilder);
+                    applicationEventPublisher.publishEvent(onUserRegistrationCompleteEvent);
+                    log.info("Registered User returned [API[: " + us);
+                    return ResponseEntity.ok(new ApiResponse("User registered successfully. Check your email for verification", true));
+                })
+                .orElseThrow(() -> new UserRegistrationException(registerDTO.getEmail(), "Missing user object in database"));
+
     }
 
     public User findByLoginAndPassword(String username, String password) {
@@ -80,7 +97,7 @@ public class AuthService implements IAuthService {
                 loginDTO.getPassword())));
     }
 
-    public Optional<RefreshToken> createAndPersistRefreshTokenForDevice(Authentication authentication, LoginDTO loginDTO) {
+    public ResponseEntity createAndPersistRefreshTokenForDevice(Authentication authentication, LoginDTO loginDTO, CustomUserDetails customUserDetails) {
         User currentUser = (User) authentication.getPrincipal();
         userDeviceService.findByUserId(currentUser.getId())
                 .map(UserDevice::getRefreshToken)
@@ -93,7 +110,14 @@ public class AuthService implements IAuthService {
         userDevice.setRefreshToken(refreshToken);
         refreshToken.setUserDevice(userDevice);
         refreshToken = refreshTokenService.save(refreshToken);
-        return Optional.ofNullable(refreshToken);
+        return Optional.ofNullable(refreshToken).map(RefreshToken::getToken)
+                .map(refresh -> {
+                    //generate new access token
+                    String jwtToken = this.generateToken(customUserDetails);
+                    //then return token and access token
+                    return ResponseEntity.ok(new JwtAuthenticationDTO(jwtToken, refresh,"Bearer " , tokenProvider.getExpiryDuration()));
+                })
+                .orElseThrow(() -> new UserLoginException("Couldn't create refresh token for: [" + loginDTO + "]"));
     }
 
     public Optional<User> confirmEmailRegistration(String emailToken) {
@@ -115,17 +139,27 @@ public class AuthService implements IAuthService {
         return Optional.of(registeredUser);
     }
 
-    public Optional<EmailVerificationToken> recreateRegistrationToken(String existingToken) {
+    public ResponseEntity recreateRegistrationToken(String existingToken) {
         EmailVerificationToken emailVerificationToken = emailVerificationTokenService.findByToken(existingToken)
                 .orElseThrow(() -> new ResourceNotFoundException("Token", "Existing email verification", existingToken));
 
         if (emailVerificationToken.getUser().getEmailVerified()) {
-            return Optional.empty();
+            throw new InvalidTokenRequestException("Email Verification Token", existingToken, "User is already registered. No need to re-generate token");
         }
-        return Optional.ofNullable(emailVerificationTokenService.updateExistingTokenWithNameAndExpiry(emailVerificationToken));
+        EmailVerificationToken newEmailToken = emailVerificationTokenService.updateExistingTokenWithNameAndExpiry(emailVerificationToken);
+
+                return Optional.ofNullable(newEmailToken.getUser())
+                .map(registeredUser -> {
+                    UriComponentsBuilder urlBuilder = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/auth/registrationConfirmation");
+                    OnRegenerateEmailVerificationEvent regenerateEmailVerificationEvent = new OnRegenerateEmailVerificationEvent((User) registeredUser, urlBuilder, newEmailToken);
+                    applicationEventPublisher.publishEvent(regenerateEmailVerificationEvent);
+                    return ResponseEntity.ok(new ApiResponse("Email verification resent successfully", true));
+                })
+                .orElseThrow(() -> new InvalidTokenRequestException("Email Verification Token", existingToken, "No user associated with this request. Re-verification denied"));
+
     }
 
-    public Optional<User> resetPassword(PasswordResetDTO passwordResetDTO) {
+    public ResponseEntity resetPassword(PasswordResetDTO passwordResetDTO) {
         String token = passwordResetDTO.getToken();
         PasswordResetToken passwordResetToken = passwordResetTokenService.findByToken(token)
                 .orElseThrow(() -> new ResourceNotFoundException("Password Reset Token", "Token Id", token));
@@ -139,11 +173,18 @@ public class AuthService implements IAuthService {
                     user.setPassword(encodedPassword);
                     userService.save(user);
                     return user;
-                });
+                }) .map(changedUser -> {
+                    OnUserAccountChangeEvent onPasswordChangeEvent = new OnUserAccountChangeEvent(changedUser, "Reset Password",
+                            "Changed Successfully");
+                    applicationEventPublisher.publishEvent(onPasswordChangeEvent);
+                    return ResponseEntity.ok(new ApiResponse("Password changed successfully", true));
+                })
+                .orElseThrow(() -> new PasswordResetException(passwordResetDTO.getToken(), "Error in resetting password"));
+
     }
 
-    public Optional<String> refreshJwtToken(RefreshTokenDTO tokenRefreshRequest) {
-        String requestRefreshToken = tokenRefreshRequest.getRefreshToken();
+    public ResponseEntity refreshJwtToken(RefreshTokenDTO refreshTokenDTO) {
+        String requestRefreshToken = refreshTokenDTO.getRefreshToken();
 
         return Optional.of(refreshTokenService.findByToken(requestRefreshToken)
                 .map(refreshToken -> {
@@ -155,7 +196,16 @@ public class AuthService implements IAuthService {
                 .map(RefreshToken::getUserDevice)
                 .map(UserDevice::getUser)
                 .map(User::getUsername).map(this::generateTokenFromUserName))
-                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken, "Missing refresh token in database.Please login again"));
+                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken, "Missing refresh token in database.Please login again"))
+                .map(updatedToken -> {
+                    String refreshToken = refreshTokenDTO.getRefreshToken();
+                    log.info("Created new Jwt Auth token: " + updatedToken);
+                    return ResponseEntity.ok(new JwtAuthenticationDTO(updatedToken, refreshToken, "Bearer ", tokenProvider.getExpiryDuration()));
+                })
+                .orElseThrow(() -> new TokenRefreshException(refreshTokenDTO.getRefreshToken(), "Unexpected error during token refresh. Please logout and login again."));
+
+
+
     }
 
     public Optional<User> updatePassword(CustomUserDetails customUserDetails,

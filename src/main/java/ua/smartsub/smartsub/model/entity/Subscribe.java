@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.Set;
+import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -43,6 +43,9 @@ public class Subscribe  {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Subs_tokens Subs_tokens;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Tag> tags;
 
 
 }

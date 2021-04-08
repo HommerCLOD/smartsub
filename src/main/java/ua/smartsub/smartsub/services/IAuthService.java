@@ -1,5 +1,6 @@
 package ua.smartsub.smartsub.services;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import ua.smartsub.smartsub.model.DTO.PasswordResetDTO;
 import ua.smartsub.smartsub.model.DTO.RefreshTokenDTO;
@@ -14,23 +15,23 @@ import ua.smartsub.smartsub.security.CustomUserDetails;
 import java.util.Optional;
 
 public interface IAuthService {
-    Optional<User> registerUser(RegisterDTO userDTO);
+    ResponseEntity registerUser(RegisterDTO userDTO);
 
     User findByLoginAndPassword(String username, String password);
 
     Optional<Authentication> authenticateUser(LoginDTO loginDTO);
 
-    Optional<RefreshToken> createAndPersistRefreshTokenForDevice(Authentication authentication, LoginDTO loginDTO);
+    ResponseEntity createAndPersistRefreshTokenForDevice(Authentication authentication, LoginDTO loginDTO ,CustomUserDetails customUserDetails);
 
     String generateToken(CustomUserDetails customUserDetails);
 
     Optional<User> confirmEmailRegistration(String emailToken);
 
-    Optional<EmailVerificationToken> recreateRegistrationToken(String existingToken);
+    ResponseEntity recreateRegistrationToken(String existingToken);
 
-    Optional<User> resetPassword(PasswordResetDTO passwordResetDTO);
+    ResponseEntity resetPassword(PasswordResetDTO passwordResetDTO);
 
-    Optional<String> refreshJwtToken(RefreshTokenDTO tokenRefreshRequest);
+    ResponseEntity refreshJwtToken(RefreshTokenDTO refreshTokenDTO);
 
     Boolean usernameAlreadyExists(String username);
 
