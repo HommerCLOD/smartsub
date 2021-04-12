@@ -11,6 +11,9 @@ import ua.smartsub.smartsub.model.entity.User;
 import ua.smartsub.smartsub.exception.UniqueUserException;
 import ua.smartsub.smartsub.services.ICommentsService;
 
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class CommentsService implements ICommentsService {
     @Autowired
@@ -26,5 +29,22 @@ public class CommentsService implements ICommentsService {
         comment.setUser(user);
         comment.setSubscribe(subscribe);
         return commentsDao.save(comment);
+    }
+
+    @Override
+    public void deleteCommentById(Long id) {
+        commentsDao.deleteById(id);
+    }
+
+    @Override
+    public Comments editComment(Long id, Comments comment) {
+        Comments com = commentsDao.findById(id).orElseThrow(()-> new RuntimeException("Not found comment"));
+        com.setText(comment.getText());
+        return com;
+    }
+
+    @Override
+    public List<Comments> allComments() {
+        return commentsDao.findAll();
     }
 }

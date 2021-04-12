@@ -48,6 +48,10 @@ public class SubscribeService implements ISubscribeService {
         return listSub;
     }
 
+    public List<Subscribe> findALl(){
+        return subscribeDao.findAll();
+    }
+
     public Boolean botnameAlreadyExists(String bot_name) {
         return subscribeDao.existsByName(bot_name);
     }

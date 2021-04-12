@@ -37,8 +37,8 @@ public class SubscribeController {
 
     @GetMapping(value = "/all")
     @ResponseStatus(HttpStatus.FOUND)
-    public List<Subscribe> allSubscribes() {
-        return subscribeService.findSubscribeByAll(null);
+    public List<Subscribe> findAllSubscribes() {
+        return subscribeService.findALl();
     }
 
     @GetMapping
