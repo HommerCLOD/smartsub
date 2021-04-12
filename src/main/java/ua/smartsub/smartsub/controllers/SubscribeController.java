@@ -47,15 +47,15 @@ public class SubscribeController {
         return subscribeService.findSubscribeByAll(keyword);
     }
 
-    @GetMapping(value = "delete/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> removeById(@PathVariable long id) {
         subscribeService.removeById(id);
         return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(value = "update/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity updateById(@PathVariable Subscribe subscribeDTO, @PathVariable long id) {
 
         return subscribeService.updateSubscribe(subscribeDTO,id).map((subscribe) ->
